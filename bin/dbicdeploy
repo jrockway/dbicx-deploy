@@ -66,7 +66,7 @@ Examples:
 
     dbicdeploy MyApp::Schema root/myapp_schema
 
-    dbicdeploy MyApp::Schema root/myapp_schema sqlite mysql
+    dbicdeploy MyApp::Schema root/myapp_schema SQLite MySQL
 
 =head1 OPTIONS
 
