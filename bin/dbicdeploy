@@ -32,8 +32,31 @@ __END__
 
 dbicdeploy - deploy a DBIx::Class schema to a database
 
-=head1 USAGE
+=head1 SYNOPSIS
+
+    dbicdeploy schema DSN
+
+Example
 
     dbicdeploy -Ilib MyApp::Schema DBI:SQLite:root/database
+
+=over 4
+
+=item -I
+
+C<lib> is a directory to add to the search path for the schema.  You
+can have 0 or more of these, just like C<perl>.
+
+=item Schema
+
+C<MyApp::Schema> is the L<DBIx::Class::Schema|DBIx::Class::Schema>
+subclass that you want to deploy.
+
+=item DSN
+
+C<DBI:SQLite:root/database> is the DBI DSN that you want to connect
+to.  I use SQLite here, but you can use C<mysql>, C<Pg>, or whatever.
+
+=back
 
 =cut
