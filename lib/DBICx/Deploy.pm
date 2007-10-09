@@ -6,12 +6,12 @@ use Carp;
 our $VERSION = '0.01';
 
 sub deploy {
-    my ($class, $schema_class, $dsn) = @_;
+    my ($class, $schema_class, $dsn, @args) = @_;
     croak 'need schema' unless $schema_class;
     croak 'need dsn' unless $dsn;
     
     eval "require $schema_class" or die "Failed to use $schema_class: $@";
-    my $schema = $schema_class->connect($dsn);
+    my $schema = $schema_class->connect($dsn, @args);
     $schema->deploy;
 }
 
@@ -34,9 +34,10 @@ or
 
 =head1 METHODS
 
-=head2 deploy($schema, $dsn)
+=head2 deploy($schema, $dsn, @args)
 
-Load the DBIC schema C<$schema>, connect to C<$dsn>, and deploy the
+Loads the DBIC schema C<$schema>, connects to C<$dsn> (with extra args
+C<@args> like username, password, and options), and deploys the
 schema.  Dies on failure.
 
 =head1 AUTHOR
