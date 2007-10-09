@@ -103,7 +103,7 @@ command.  Usually the first two arguments are the username and
 password.
 
 The third argument is special.  It will be run through eval, so you
-can say C<{ hash => 'of options', and => 'so on' }>, and DBI will see
+can say C<< { hash => 'of options', and => 'so on' } >>, and DBI will see
 a hash, not a string.  If the option doesn't parse as perl, the deploy
 will be aborted.
 
