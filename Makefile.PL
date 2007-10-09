@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use inc::Module::Install;
 
-name 'DBICx::Deploy';
+name 'DBICx-Deploy';
 all_from 'lib/DBICx/Deploy.pm' ;
 
 requires 'DBIx::Class';
