@@ -9,4 +9,7 @@ requires 'DBIx::Class';
 requires 'SQL::Translator';
 requires 'Pod::Usage';
 
+build_requires 'Test::More';
+build_requires 'DBD::SQLite';
+
 WriteAll();
