@@ -36,9 +36,6 @@ if(@args > 2){
     my $struct = $args[2];
     $args[2] = eval $struct or die "$struct doesn't parse"; 
 }
-if(@args > 3){
-    warn "More than 3 args?  OK, but I don't think it does anything.";
-}
 
 DBICx::Deploy->deploy($schema => $dsn, @args);
 exit 0;
