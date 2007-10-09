@@ -1,0 +1,39 @@
+#!/usr/bin/evn perl
+
+use strict;
+use warnings;
+
+use Pod::Usage;
+use DBICx::Deploy;
+
+my (@lib, @tmp);
+BEGIN {
+    foreach my $arg (@ARGV){
+        if(my ($path) = ($arg =~ /-I(.+)/)){
+            push @lib, $path;
+        }
+        else {
+            push @tmp, $arg;
+        }
+    }
+}
+
+use lib @lib;
+
+pod2usage("$0: Need the schema and the dsn to deploy to") if @tmp != 2;
+
+my ($schema, $dsn) = @tmp;
+DBICx::Deploy->deploy($schema => $dsn);
+exit 0;
+
+__END__
+
+=head1 NAME
+
+dbicdeploy - deploy a DBIx::Class schema to a database
+
+=head1 USAGE
+
+    dbicdeploy -Ilib MyApp::Schema DBI:SQLite:root/database
+
+=cut
