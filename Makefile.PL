@@ -12,4 +12,6 @@ requires 'Pod::Usage';
 build_requires 'Test::More';
 build_requires 'DBD::SQLite';
 
+install_script('bin/dbicdeploy');
+
 WriteAll();
