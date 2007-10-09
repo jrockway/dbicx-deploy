@@ -72,7 +72,7 @@ See C<perldoc dbicdeploy> for more information.
 
 =head1 OPTIONS
 
-=head2 -I<lib>
+=head2 -Ilib
 
 C<lib> is a directory to add to the search path for the schema.  You
 can have 0 or more of these, just like C<perl>.
