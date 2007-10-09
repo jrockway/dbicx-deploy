@@ -51,7 +51,13 @@ dbicdeploy - deploy a DBIx::Class schema to a database
 
 =head1 SYNOPSIS
 
+Deploy to a database server:
+
     dbicdeploy schema DSN [username [password [{ extra => 'args'}]]]
+
+Generate a directory containing SQL to execute to create the schema:    
+
+    dbicdeploy schema directory [databases]
 
 Examples:
 
@@ -60,6 +66,10 @@ Examples:
     dbicdeploy MyApp::Schema DBI:mysql:foo username password
 
     dbicdeploy MyApp::Schema DBI:Pg:foo user pass '{ pg_enable_utf8 => 1 }'
+
+    dbicdeploy MyApp::Schema root/myapp_schema
+
+    dbicdeploy MyApp::Schema root/myapp_schema sqlite mysql
 
 =over 4
 
@@ -93,11 +103,12 @@ password.
 
 The third argument is special.  It will be run through eval, so you
 can say C<{ hash => 'of options', and => 'so on' }>, and DBI will see
-a hash, not a string.  If the option doesn't parse, the deploy will be
-aborted.
+a hash, not a string.  If the option doesn't parse as perl, the deploy
+will be aborted.
 
-If you pass more than three arguments, you'll get a warning because I
-don't think you really want to do that.
+In the case that you're deploying to a file instead of a database, the
+arguments after the filename are used as the names of the database
+engines you want to generate SQL for.
 
 =head1 AUTHOR
 
