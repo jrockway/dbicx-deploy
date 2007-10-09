@@ -6,12 +6,12 @@ use Carp;
 our $VERSION = '0.01';
 
 sub deploy {
-    my ($class, $schema, $dsn) = @_;
-    croak 'need schema' unless $schema;
+    my ($class, $schema_class, $dsn) = @_;
+    croak 'need schema' unless $schema_class;
     croak 'need dsn' unless $dsn;
     
-    eval "use $schema" or die "Failed to use $schema: $@";
-    $schema->connect($dsn);
+    eval "require $schema_class" or die "Failed to use $schema_class: $@";
+    my $schema = $schema_class->connect($dsn);
     $schema->deploy;
 }
 
