@@ -13,10 +13,11 @@ BEGIN {
             push @lib, $path;
         }
         elsif ($arg eq '-l') {
-            push @lib, "lib/";
+            push @lib, 'lib';
         }
         elsif ($arg eq '-b') {
-            push @lib, "blib/";
+            require blib;
+            blib->import;
         }
         else {
             push @tmp, $arg;
@@ -26,10 +27,20 @@ BEGIN {
 
 use lib @lib;
 
-pod2usage("$0: Need the schema and the dsn to deploy to") if @tmp != 2;
+pod2usage("$0: Need the schema and the dsn to deploy to") if @tmp < 2;
 
-my ($schema, $dsn) = @tmp;
-DBICx::Deploy->deploy($schema => $dsn);
+my ($schema, $dsn, @args) = @tmp;
+
+if(@args > 2){
+    # change '{foo => bar}' into a data structure
+    my $struct = $args[2];
+    $args[2] = eval $struct or die "$struct doesn't parse"; 
+}
+if(@args > 3){
+    warn "More than 3 args?  OK, but I don't think it does anything.";
+}
+
+DBICx::Deploy->deploy($schema => $dsn, @args);
 exit 0;
 
 __END__
@@ -40,36 +51,62 @@ dbicdeploy - deploy a DBIx::Class schema to a database
 
 =head1 SYNOPSIS
 
-    dbicdeploy schema DSN
+    dbicdeploy schema DSN [username [password [{ extra => 'args'}]]]
 
-Example
+Examples:
 
     dbicdeploy -Ilib MyApp::Schema DBI:SQLite:root/database
 
+    dbicdeploy MyApp::Schema DBI:mysql:foo username password
+
+    dbicdeploy MyApp::Schema DBI:Pg:foo user pass '{ pg_enable_utf8 => 1 }'
+
 =over 4
 
-=item -l
-
-Alias for -Ilib/
-
-=item -b
-
-Alias for -Iblib/
-
-=item -I
+=item -I<lib>
 
 C<lib> is a directory to add to the search path for the schema.  You
 can have 0 or more of these, just like C<perl>.
 
+=item -l
+
+Alias for -Ilib
+
+=item -b
+
+Get libraries from L<blib|blib> isntead
+
 =item Schema
 
-C<MyApp::Schema> is the L<DBIx::Class::Schema|DBIx::Class::Schema>
-subclass that you want to deploy.
+the name of the L<DBIx::Class::Schema|DBIx::Class::Schema> subclass
+that you want to deploy
 
 =item DSN
 
-C<DBI:SQLite:root/database> is the DBI DSN that you want to connect
-to.  I use SQLite here, but you can use C<mysql>, C<Pg>, or whatever.
+the DBI DSN that you want to connect to
+
+=item Extra Arguments
+
+Everything after the Schema and DSN will be passed to the connect
+command.  Usually the first two arguments are the username and
+password.
+
+The third argument is special.  It will be run through eval, so you
+can say C<{ hash => 'of options', and => 'so on' }>, and DBI will see
+a hash, not a string.  If the option doesn't parse, the deploy will be
+aborted.
+
+If you pass more than three arguments, you'll get a warning because I
+don't think you really want to do that.
+
+=head1 AUTHOR
+
+Jonathan Rockway C<< <jrockway@cpan.org> >>
+
+=head1 LICENSE
+
+This program is free software.  You may redistribute it under the same
+terms as Perl it self.
 
 =back
 
