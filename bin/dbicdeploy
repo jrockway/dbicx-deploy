@@ -110,6 +110,10 @@ In the case that you're deploying to a file instead of a database, the
 arguments after the filename are used as the names of the database
 engines you want to generate SQL for.
 
+=head1 SEE ALSO
+
+L<DBICx::Deploy|DBICx::Deploy>, included with this distribution.
+
 =head1 AUTHOR
 
 Jonathan Rockway C<< <jrockway@cpan.org> >>

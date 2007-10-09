@@ -9,7 +9,9 @@ sub deploy {
     my ($class, $schema_class, $dsn, @args) = @_;
     croak 'need schema' unless $schema_class;
     croak 'need dsn' unless $dsn;
+
     
+
     eval "require $schema_class" or die "Failed to use $schema_class: $@";
     my $schema = $schema_class->connect($dsn, @args);
     $schema->deploy;
@@ -39,6 +41,15 @@ or
 Loads the DBIC schema C<$schema>, connects to C<$dsn> (with extra args
 C<@args> like username, password, and options), and deploys the
 schema.  Dies on failure.
+
+If C<$dsn> doesn't start with "DBI", C<deploy> assumes that you want
+to write the SQL to generate the schema to a directory called C<$dsn>.
+In this case C<@args> is a list of database engines you want to
+generate SQL for.
+
+=head1 SEE ALSO
+
+L<dbicdeploy|dbicdeploy>, included with this distribution.
 
 =head1 AUTHOR
 
