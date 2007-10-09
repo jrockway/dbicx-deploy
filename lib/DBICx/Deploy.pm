@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub deploy {
     my ($class, $schema_class, $dsn, @args) = @_;
@@ -43,6 +43,22 @@ schema.  Dies on failure.
 =head1 AUTHOR
 
 Jonathan Rockway C<< <jrockway@cpan.org> >>
+
+=head1 CONTRIBUTORS
+
+The following people have contributed code or bug reports:
+
+=over 4
+
+=item Brian Cassidy
+
+=item Andreas Marienborg
+
+=item Pedro Melo
+
+=back
+
+Thanks!
 
 =head1 LICENSE
 
