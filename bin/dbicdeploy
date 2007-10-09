@@ -12,6 +12,12 @@ BEGIN {
         if(my ($path) = ($arg =~ /-I(.+)/)){
             push @lib, $path;
         }
+        elsif ($arg eq '-l') {
+            push @lib, "lib/";
+        }
+        elsif ($arg eq '-b') {
+            push @lib, "blib/";
+        }
         else {
             push @tmp, $arg;
         }
@@ -41,6 +47,14 @@ Example
     dbicdeploy -Ilib MyApp::Schema DBI:SQLite:root/database
 
 =over 4
+
+=item -l
+
+Alias for -Ilib/
+
+=item -b
+
+Alias for -Iblib/
 
 =item -I
 
