@@ -2,6 +2,7 @@ package DBICx::Deploy;
 use strict;
 use warnings;
 use Carp;
+use File::Spec;
 
 our $VERSION = '0.02';
 
@@ -10,11 +11,32 @@ sub deploy {
     croak 'need schema' unless $schema_class;
     croak 'need dsn' unless $dsn;
 
-    
-
     eval "require $schema_class" or die "Failed to use $schema_class: $@";
-    my $schema = $schema_class->connect($dsn, @args);
-    $schema->deploy;
+
+    if($dsn =~ /^DBI:/i){
+        my $schema = $schema_class->connect($dsn, @args);
+        $schema->deploy;
+    }
+    else {
+        # $dsn is a directory
+        my $schema = $schema_class->connect;
+        _mkdir($dsn);
+        @args = qw/MySQL SQLite PostgreSQL/ if !@args;
+        $schema->create_ddl_dir(\@args, undef, $dsn);
+    }
+}
+
+# wtf.  why?
+sub _mkdir {
+    my $dir = shift;
+    my @dirs = File::Spec->splitdir($dir);
+    
+    my $base = shift @dirs;
+    mkdir $base;
+    foreach my $d (@dirs){
+        $base = File::Spec->catdir($base, $d);
+        mkdir $base;
+    }
 }
 
 1;
@@ -44,8 +66,12 @@ schema.  Dies on failure.
 
 If C<$dsn> doesn't start with "DBI", C<deploy> assumes that you want
 to write the SQL to generate the schema to a directory called C<$dsn>.
-In this case C<@args> is a list of database engines you want to
-generate SQL for.
+If C<$dsn> doesn't exist, it (and its parents) will be created for
+you.
+
+When deploying to SQL files, C<@args> is a list of database engines
+you want to generate SQL for.  It defauts to "MySQL", "SQLite", and
+"PostgreSQL".  See L<SQL::Translator> for a list of possible engines.
 
 =head1 SEE ALSO
 
