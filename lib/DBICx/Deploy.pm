@@ -25,7 +25,7 @@ DBICx::Deploy - deploy a DBIx::Class schema
 
 =head1 SYNOPSIS
 
-   use DBIx::Class;
+   use DBICx::Deploy;
    DBICx::Deploy->deploy('My::Schema' => 'DBI:SQLite:root/database');
 
 or
