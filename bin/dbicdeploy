@@ -92,6 +92,10 @@ that you want to deploy
 
 the DBI DSN that you want to connect to
 
+This can also be a directory name, in which case the directory will be
+created and the SQL to necessary to generate the schema will be
+populated there.
+
 =item Extra Arguments
 
 Everything after the Schema and DSN will be passed to the connect
