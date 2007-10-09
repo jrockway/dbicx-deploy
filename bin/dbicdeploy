@@ -68,6 +68,8 @@ Examples:
 
     dbicdeploy MyApp::Schema root/myapp_schema SQLite MySQL
 
+See C<perldoc dbicdeploy> for more information.
+
 =head1 OPTIONS
 
 =head2 -I<lib>
