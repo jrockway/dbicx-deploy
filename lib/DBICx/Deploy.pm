@@ -11,7 +11,9 @@ sub deploy {
     croak 'need schema' unless $schema_class;
     croak 'need dsn' unless $dsn;
 
-    eval "require $schema_class" or die "Failed to use $schema_class: $@";
+    unless ( ref $schema_class ) {
+        eval "require $schema_class" or die "Failed to use $schema_class: $@";
+    }
 
     if($dsn =~ /^DBI:/i){
         my $schema = $schema_class->connect($dsn, @args);
